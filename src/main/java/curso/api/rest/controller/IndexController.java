@@ -33,19 +33,20 @@ public class IndexController {
 
 	/* Serviço RESTFull */
 	@GetMapping(value = "/{id}", produces = "application/json", headers = "X-API-Version=v1")
-	@CacheEvict(value = "cacheusuarios", allEntries = true) // limpa o cache que nao esta sendo utilizado por um certo periodo
+	@CacheEvict(value = "cacheusuarios", allEntries = true) // limpa o cache que nao esta sendo utilizado por um certo
+															// periodo
 	@CachePut("cacheusuarios") // traz o cache em memoria atualizado
 	public ResponseEntity<UsuarioDTO> initV1(@PathVariable(value = "id") Long id) {
 
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		System.out.println("Executando versao 1");
-		
+
 		/* O retorno seria um relatorio */
 		return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(usuario.get()), HttpStatus.OK);
 	}
 
-       @GetMapping(value = "/", produces = "application/json")
-       public ResponseEntity<List<Usuario>> usuario() {
+	@GetMapping(value = "/", produces = "application/json")
+	public ResponseEntity<List<Usuario>> usuario() {
 
 		List<Usuario> list = (List<Usuario>) usuarioRepository.findAll();
 
@@ -82,6 +83,14 @@ public class IndexController {
 		Usuario usuarioSalvo = usuarioRepository.save(usuario);
 		return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);
 
+	}
+
+	/* END-POINT Consulta por nome */
+	@GetMapping(value = "/usuarioPorNome/{nome}", produces = "application/json")
+	public ResponseEntity<List<Usuario>> usuarioPorNome(@PathVariable("nome") String nome) {
+		List<Usuario> list = (List<Usuario>) usuarioRepository.findUserByNome(nome);
+
+		return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/{id}", produces = "application/text")
