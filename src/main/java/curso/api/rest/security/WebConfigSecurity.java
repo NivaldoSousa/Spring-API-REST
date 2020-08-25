@@ -32,6 +32,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 	/*Ativando a PERMISSÃO para acesso a página inicial do sistema EX: sistema.com.br/index*/
 	.disable().authorizeRequests().antMatchers("/").permitAll().antMatchers("/index").permitAll()
 	.antMatchers(HttpMethod.OPTIONS,"/**").permitAll().antMatchers(HttpMethod.GET).permitAll()
+	.antMatchers(HttpMethod.DELETE).permitAll()
 	
 	/*URL de Logout - Redireciona após o user deslogar do sistema*/
 	.anyRequest().authenticated().and().logout().logoutSuccessUrl("/index")
