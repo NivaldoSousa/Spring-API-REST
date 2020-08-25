@@ -48,7 +48,9 @@ public class JWTTokenAutenticacaoService {
 		response.addHeader(HEADER_STRING, token); /*Authorization: Bearer 878787wewewe87878ew87ew87e8w78we8we */
 
 		/*Liberando resposta para portas diferentes que usam a API ou caso clientes Web*/
-		liberacaoCors(response);
+		if (response.getHeader("Access-Control-Allow-Origin") == null) {
+			response.addHeader("Access-Control-Allow-Origin", "*");
+		}
 		
 		/* Escreve token como resposta no corpo http */
 		response.getWriter().write("{\"Authorization\": \"" + token + "\"}");
