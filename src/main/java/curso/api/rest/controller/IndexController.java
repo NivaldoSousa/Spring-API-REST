@@ -32,17 +32,13 @@ public class IndexController {
 	private UsuarioRepository usuarioRepository;
 
 	/* Serviço RESTFull */
-	@GetMapping(value = "/{id}", produces = "application/json", headers = "X-API-Version=v1")
-	@CacheEvict(value = "cacheusuarios", allEntries = true) // limpa o cache que nao esta sendo utilizado por um certo
-															// periodo
-	@CachePut("cacheusuarios") // traz o cache em memoria atualizado
-	public ResponseEntity<UsuarioDTO> initV1(@PathVariable(value = "id") Long id) {
+	@GetMapping(value = "/{id}", produces = "application/json")
+	public ResponseEntity<Usuario> init(@PathVariable(value = "id") Long id) {
 
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		System.out.println("Executando versao 1");
 
-		/* O retorno seria um relatorio */
-		return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(usuario.get()), HttpStatus.OK);
+		return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/", produces = "application/json")
